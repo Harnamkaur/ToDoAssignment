@@ -1,9 +1,11 @@
 //
-//  MainViewController.swift
+// File name-  MainViewController.swift
 //  IOS_Assignment2_ToDoApp
-//
-//  Created by Harnam kaur on 04/12/19.
-//  Copyright © 2019 Harnam kaur. All rights reserved.
+//Author's name - Harnam kaur
+//app name- ToDo App
+//Student id -301093907
+//file description -This is the fireview controller where u can see all the added tasks or add task button is here .. if u wantto edit a task the button of  this is next after the every task 
+
 //
 
 import UIKit
@@ -30,28 +32,14 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     
 
     
-//    func retrieveData(){
-//
-//       db = Firestore.firestore()
-//        db?.collection("data").getDocuments(completion: { (snap, err) in
-//
-//            for i in snap!.documents{
-//                self.dictionary.append(i.data() as [String : AnyObject])
-//
-//            }
-//            print("dict is",self.dictionary)
-//
-//            self.tableView.reloadData()
-//        })
-//
-//    }
+
     
      func tableView(_ tableView: UITableView, numberOfRowsInSection section:  Int) -> Int {
         return dictionary.count
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 50
+        return 100
     }
     
      func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -88,18 +76,21 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     
     func retrieveData(){
-        
+        self.dictionary.removeAll()
         db = Firestore.firestore()
         db?.collection("data").getDocuments(completion: { (snap, err) in
-        
+
             for i in snap!.documents{
                 self.dictionary.append(i.data() as [String : AnyObject])
-                
+
             }
             print("dict is",self.dictionary)
-            
+
             self.tableView.reloadData()
         })
+        
+
+
         
     }
     

@@ -1,10 +1,10 @@
 //
-//  AddDiscrptionViewController.swift
+//  File name -AddDiscrptionViewController.swift
 //  IOS_Assignment2_ToDoApp
-//
-//  Created by Harnam kaur on 04/12/19.
-//  Copyright © 2019 Harnam kaur. All rights reserved.
-//
+//Author's name - Harnam kaur
+//app name- ToDo App
+//Student id -301093907
+//file description - Thi is the second view controller where every operation related to task is performed like add task , delete and  update .. And every task is added to firebase.
 
 import UIKit
 import Firebase
@@ -38,7 +38,8 @@ class AddDiscrptionViewController: UIViewController {
         db = Firestore.firestore()
               
 
-              let parameters = ["name":Titlename.text!,"notes":Details.text!,"docId":dict["docId"]!,"completed":false] as [String : Any]
+        let parameters = ["name":Titlename.text!,"notes":Details.text!,"docId":dict["docId"]!,"completed":false,"date":dict["date"]!] as [String : Any]
+        
 
                db?.collection("data").document((dict["docId"] as? String)!).updateData(parameters as [String : Any]){
                    err in
@@ -50,7 +51,7 @@ class AddDiscrptionViewController: UIViewController {
                        
                        let alert = UIAlertController(title: "Message", message: "Successfully Updated", preferredStyle: .alert)
                        let okay = UIAlertAction(title: "OK", style: .default, handler: { (action) in
-                           self.navigationController?.popViewController(animated: true)
+                        //   self.navigationController?.popViewController(animated: true)
                        })
                        alert.addAction(okay)
                        self.present(alert, animated: true, completion: nil)
@@ -79,7 +80,7 @@ class AddDiscrptionViewController: UIViewController {
                        
                        let alert = UIAlertController(title: "Message", message: "Successfully Deleted", preferredStyle: .alert)
                        let okay = UIAlertAction(title: "OK", style: .default, handler: { (action) in
-                           self.navigationController?.popViewController(animated: true)
+                          // self.navigationController?.popViewController(animated: true)
                        })
                        alert.addAction(okay)
                        self.present(alert, animated: true, completion: nil)
@@ -119,7 +120,7 @@ class AddDiscrptionViewController: UIViewController {
     
     
 
-    
+           
     
            let docId = db?.collection("data").document().documentID
     
@@ -135,7 +136,7 @@ class AddDiscrptionViewController: UIViewController {
                   // self.indicator.stopAnimating()
                    let alert = UIAlertController(title: "Message", message: "Successfully added", preferredStyle: .alert)
                    let okay = UIAlertAction(title: "OK", style: .default, handler: { (action) in
-                       self.navigationController?.popViewController(animated: true)
+                     //  self.navigationController?.popViewController(animated: true)
                    })
                    alert.addAction(okay)
 //
