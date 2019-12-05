@@ -17,11 +17,12 @@ class AddDiscrptionViewController: UIViewController {
     
  
     @IBAction func DatePicker(_ sender: UIDatePicker) {
-        d = sender.date.description
+    
         let datep = sender.date
                   let formatter = ISO8601DateFormatter()
                   formatter.timeZone = .current
                   d = formatter.string(from: datep)
+        print(d)
         
     }
     var db:Firestore?
@@ -60,21 +61,45 @@ class AddDiscrptionViewController: UIViewController {
            
     
     
-       db = Firestore.firestore()
-     var db = Firestore.firestore()
-            var s = Auth.auth().currentUser!.uid
-            db.collection(s).document(Titlename.text!).setData([
-                "heading": Titlename.text,
-                "description": Details.text,
-                "date": d
-            ]) { err in
-                if let err = err {
-                    print("Error writing document: \(err)")
-                } else {
-                    let mainVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "mainViewController") as! MainViewController
-                    self.present(mainVC, animated: true, completion: nil)
-                }
-            }
+//       db = Firestore.firestore()
+//            var db = Firestore.firestore()
+//            var s = Auth.auth().currentUser!.uid
+//            db.collection(s).document(Titlename.text!).setData([
+//                "heading": Titlename.text,
+//                "description": Details.text,
+//                "date": d
+//            ]) { err in
+//                if let err = err {
+//                    print("Error writing document: \(err)")
+//                } else {
+//                    let mainVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "mainViewController") as! MainViewController
+//                    self.present(mainVC, animated: true, completion: nil)
+//                }
+//            }
+    
+    
+           let docId = db?.collection("data").document().documentID
+    
+    let parameters = ["name":Titlename.text!,"notes":Details.text!,"date": d,"docId":docId!,"completed":false] as [String : Any]
+    
+           db?.collection("data").document(docId!).setData(parameters as [String : Any]){
+               err in
+               if let error = err{
+                   print(error.localizedDescription)
+                 // self.indicator.stopAnimating()
+               }else{
+                   print("document added successfully")
+                  // self.indicator.stopAnimating()
+                   let alert = UIAlertController(title: "Message", message: "Successfully added", preferredStyle: .alert)
+                   let okay = UIAlertAction(title: "OK", style: .default, handler: { (action) in
+                       self.navigationController?.popViewController(animated: true)
+                   })
+                   alert.addAction(okay)
+//
+                                       self.present(alert, animated: true, completion: nil)
+               }
+    
+           }
 
             
             
@@ -83,14 +108,7 @@ class AddDiscrptionViewController: UIViewController {
             
         }
         
-//        @IBAction func datepicker(_ sender: UIDatePicker) {
-//            let datep = sender.date
-//            let formatter = ISO8601DateFormatter()
-//            formatter.timeZone = .current
-//            d = formatter.string(from: datep)
-//
-//
-//        }
+       
     }
 
 

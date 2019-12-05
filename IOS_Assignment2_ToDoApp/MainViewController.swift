@@ -21,7 +21,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         super.viewDidLoad()
 
         
-        
+        retrieveData()
         
     }
     
@@ -30,7 +30,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     func retrieveData(){
         
        db = Firestore.firestore()
-        db?.collection("tasks").getDocuments(completion: { (snap, err) in
+        db?.collection("data").getDocuments(completion: { (snap, err) in
             
             for i in snap!.documents{
                 self.dictionary.append(i.data() as [String : AnyObject])
@@ -38,14 +38,18 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
             }
             print("dict is",self.dictionary)
             
-            
+            self.tableView.reloadData()
         })
-        self.tableView.reloadData()
+        
     }
+    
      func tableView(_ tableView: UITableView, numberOfRowsInSection section:  Int) -> Int {
         return dictionary.count
     }
     
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 50
+    }
     
      func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell:UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "cell")!
@@ -54,16 +58,17 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         print("index",index)
         
         if let x = cell.viewWithTag(1) as? UILabel{
-            x.text = "dnnj"
+            x.text = index["name"] as? String
         }
         
         
         if let y = cell.viewWithTag(2) as? UILabel{
-            y.text = "dnnj"
+            y.text = index["notes"] as? String
         }
         
         return cell
     }
+    
     @IBAction func add(_ sender: UIBarButtonItem) {
         self.performSegue(withIdentifier: "addtask", sender: nil)
         
