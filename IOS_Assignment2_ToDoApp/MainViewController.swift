@@ -94,10 +94,15 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         
     }
     
-    @IBAction func add(_ sender: UIBarButtonItem) {
-        self.performSegue(withIdentifier: "addtask", sender: nil)
-        
+    
+    @IBAction func addTask(_ sender: UIButton) {
+         self.performSegue(withIdentifier: "addtask", sender: nil)
     }
+    
+//    @IBAction func add(_ sender: UIBarButtonItem) {
+//        self.performSegue(withIdentifier: "addtask", sender: nil)
+//
+//    }
     
     
 }
