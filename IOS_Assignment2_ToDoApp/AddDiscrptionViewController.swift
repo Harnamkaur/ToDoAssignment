@@ -14,7 +14,7 @@ class AddDiscrptionViewController: UIViewController {
     @IBOutlet weak var Titlename: UITextField!
     @IBOutlet weak var Details: UITextField!
     var d:String = ""
-    
+    var dict = [String:AnyObject]()
  
     @IBAction func DatePicker(_ sender: UIDatePicker) {
     
@@ -31,11 +31,68 @@ class AddDiscrptionViewController: UIViewController {
         super.viewDidLoad()
         db = Firestore.firestore()
 
-
+     print("dict",dict)
     }
     
+    @IBAction func UpdateTask(_ sender: UIButton) {
+        db = Firestore.firestore()
+              
 
-   @IBAction func Done(_ sender: UIButton) {
+              let parameters = ["name":Titlename.text!,"notes":Details.text!,"docId":dict["docId"]!,"completed":false] as [String : Any]
+
+               db?.collection("data").document((dict["docId"] as? String)!).updateData(parameters as [String : Any]){
+                   err in
+                   if let error = err{
+                       print(error.localizedDescription)
+                       
+                   }else{
+                       print("document added successfully")
+                       
+                       let alert = UIAlertController(title: "Message", message: "Successfully Updated", preferredStyle: .alert)
+                       let okay = UIAlertAction(title: "OK", style: .default, handler: { (action) in
+                           self.navigationController?.popViewController(animated: true)
+                       })
+                       alert.addAction(okay)
+                       self.present(alert, animated: true, completion: nil)
+                       
+                       
+                   }
+
+               }
+        
+        
+    }
+    
+   
+       
+        
+    
+    @IBAction func DeleteTask(_ sender: UIButton) {
+        db = Firestore.firestore()
+               db?.collection("data").document((dict["docId"] as? String)!).delete(){
+                   err in
+                   if let error = err{
+                       print(error.localizedDescription)
+                       
+                   }else{
+                       print("document deleted successfully")
+                       
+                       let alert = UIAlertController(title: "Message", message: "Successfully Deleted", preferredStyle: .alert)
+                       let okay = UIAlertAction(title: "OK", style: .default, handler: { (action) in
+                           self.navigationController?.popViewController(animated: true)
+                       })
+                       alert.addAction(okay)
+                       self.present(alert, animated: true, completion: nil)
+                   }
+               }
+    }
+    
+    @IBAction func CancelTask(_ sender: Any) {
+        self.dismiss(animated: true, completion: nil)
+        self.navigationController?.popViewController(animated: true)
+    }
+    
+    @IBAction func Done(_ sender: UIButton) {
     
     if (d == ""){
         var alertController = UIAlertController(title: "Error", message:
@@ -61,21 +118,7 @@ class AddDiscrptionViewController: UIViewController {
            
     
     
-//       db = Firestore.firestore()
-//            var db = Firestore.firestore()
-//            var s = Auth.auth().currentUser!.uid
-//            db.collection(s).document(Titlename.text!).setData([
-//                "heading": Titlename.text,
-//                "description": Details.text,
-//                "date": d
-//            ]) { err in
-//                if let err = err {
-//                    print("Error writing document: \(err)")
-//                } else {
-//                    let mainVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "mainViewController") as! MainViewController
-//                    self.present(mainVC, animated: true, completion: nil)
-//                }
-//            }
+
     
     
            let docId = db?.collection("data").document().documentID
@@ -112,27 +155,7 @@ class AddDiscrptionViewController: UIViewController {
     }
 
 
-//       let docId = db?.collection("users").document().documentID
-//
-//       let parameters = ["name":Titlename.text!,"notes":Details.text!,"docId":docId!,"completed":false] as [String : Any]
-//
-//       db?.collection("users").document(docId!).setData(parameters as [String : Any]){
-//           err in
-//           if let error = err{
-//               print(error.localizedDescription)
-//             //  self.indicator.stopAnimating()
-//           }else{
-//               print("document added successfully")
-//              // self.indicator.stopAnimating()
-//               let alert = UIAlertController(title: "Message", message: "Successfully added", preferredStyle: .alert)
-//               let okay = UIAlertAction(title: "OK", style: .default, handler: { (action) in
-//                   self.navigationController?.popViewController(animated: true)
-//               })
-//               alert.addAction(okay)
-//               self.present(alert, animated: true, completion: nil)
-//           }
-//
-//       }
+
 
        
 

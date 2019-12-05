@@ -13,6 +13,9 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
 
     var db: Firestore?
     var dictionary = [[String:AnyObject]]()
+    var arr = ["Task1","Task2"]
+   
+    var indexDict = [String:AnyObject]()
     @IBOutlet weak var tableView: UITableView!
     
     override func viewDidLoad() {
@@ -27,21 +30,21 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     
 
     
-    func retrieveData(){
-        
-       db = Firestore.firestore()
-        db?.collection("data").getDocuments(completion: { (snap, err) in
-            
-            for i in snap!.documents{
-                self.dictionary.append(i.data() as [String : AnyObject])
-                
-            }
-            print("dict is",self.dictionary)
-            
-            self.tableView.reloadData()
-        })
-        
-    }
+//    func retrieveData(){
+//
+//       db = Firestore.firestore()
+//        db?.collection("data").getDocuments(completion: { (snap, err) in
+//
+//            for i in snap!.documents{
+//                self.dictionary.append(i.data() as [String : AnyObject])
+//
+//            }
+//            print("dict is",self.dictionary)
+//
+//            self.tableView.reloadData()
+//        })
+//
+//    }
     
      func tableView(_ tableView: UITableView, numberOfRowsInSection section:  Int) -> Int {
         return dictionary.count
@@ -67,6 +70,37 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
         
         return cell
+    }
+    
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        indexDict = dictionary[indexPath.row]
+        self.performSegue(withIdentifier: "data", sender: nil)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "data"{
+            let vc = segue.destination as? AddDiscrptionViewController
+            vc!.dict = indexDict
+        }
+    }
+    
+    
+    
+    func retrieveData(){
+        
+        db = Firestore.firestore()
+        db?.collection("data").getDocuments(completion: { (snap, err) in
+        
+            for i in snap!.documents{
+                self.dictionary.append(i.data() as [String : AnyObject])
+                
+            }
+            print("dict is",self.dictionary)
+            
+            self.tableView.reloadData()
+        })
+        
     }
     
     @IBAction func add(_ sender: UIBarButtonItem) {
